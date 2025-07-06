@@ -251,8 +251,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				dataType: "json",
 				success: function(response) {
 					$('#cariSantri').empty();
+					$('#cariSantri').append(' <option value="Daftar Baru">Pendaftar Baru</option>');
 					$.each(response.data.data, function(index, value) {
-						$('#cariSantri').append(' <option value = "' + value.nama + '" >' + value.nama + ' </>');
+						$('#cariSantri').append(' <option value = "' + value.nama + '" >' + value.nama + ' </option>');
 					});
 				},
 				error: function(xhr, status, error) {
