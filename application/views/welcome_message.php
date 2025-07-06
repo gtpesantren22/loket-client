@@ -221,15 +221,31 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				allowClear: true,
 				width: '100%' // supaya mengikuti lebar Tailwind
 			});
-			loadAntrianNow();
-			loadAntrianNext();
-			loadAntrianAll();
-			loadAntrianLast()
-			loadSantri();
+			runInSequence()
+			setInterval(async () => {
+				try {
+					await loadAntrianNow();
+					await loadAntrianNext();
+					await loadAntrianAll();
+				} catch (error) {
+					console.error('Gagal memuat antrian:', error);
+				}
+			}, 5000);
 		});
+		async function runInSequence() {
+			try {
+				await loadAntrianNow();
+				await loadAntrianNext();
+				await loadAntrianAll();
+				await loadAntrianLast();
+				await loadSantri();
+			} catch (err) {
+				console.error("Terjadi kesalahan:", err);
+			}
+		}
 
 		function loadSantri() {
-			$.ajax({
+			return $.ajax({
 				type: "GET",
 				url: "<?= base_url('welcome/santri') ?>",
 				dataType: "json",
@@ -246,7 +262,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		}
 
 		function loadAntrianNow() {
-			$.ajax({
+			return $.ajax({
 				type: "GET",
 				url: "<?= base_url('welcome/nowQueu') ?>",
 				dataType: "html",
@@ -260,7 +276,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		}
 
 		function loadAntrianNext() {
-			$.ajax({
+			return $.ajax({
 				type: "GET",
 				url: "<?= base_url('welcome/nextQueu') ?>",
 				dataType: "html",
@@ -274,7 +290,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		}
 
 		function loadAntrianAll() {
-			$.ajax({
+			return $.ajax({
 				type: "GET",
 				url: "<?= base_url('welcome/allQueu') ?>",
 				dataType: "html",
@@ -288,7 +304,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		}
 
 		function loadAntrianLast() {
-			$.ajax({
+			return $.ajax({
 				type: "GET",
 				url: "<?= base_url('welcome/lastQueu') ?>",
 				dataType: "json",
